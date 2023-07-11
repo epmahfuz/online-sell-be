@@ -6,11 +6,15 @@ const mongoose = require("mongoose");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const moment = require("moment");
+const cors = require('cors');
 
 // internal imports
 const loginRouter = require("./router/loginRouter");
 const usersRouter = require("./router/usersRouter");
 const inboxRouter = require("./router/inboxRouter");
+const productRouter = require("./router/productRouter");
+const categoryRouter = require("./router/categoryRouter");
+const postsRouter = require('./router/posts');
 
 // internal imports
 const {
@@ -19,6 +23,9 @@ const {
 } = require("./middlewares/common/errorHandler");
 
 const app = express();
+// Enable CORS for all routes
+app.use(cors());
+
 const server = http.createServer(app);
 dotenv.config();
 
@@ -55,6 +62,9 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use("/", loginRouter);
 app.use("/users", usersRouter);
 app.use("/inbox", inboxRouter);
+app.use("/product", productRouter);
+app.use("/category", categoryRouter);
+
 app.get('/api/users', (req, res) => {
   // Logic to fetch users from a database or any other data source
   const users = [
