@@ -65,17 +65,6 @@ app.use("/inbox", inboxRouter);
 app.use("/product", productRouter);
 app.use("/category", categoryRouter);
 
-app.get('/api/users', (req, res) => {
-  // Logic to fetch users from a database or any other data source
-  const users = [
-    { id: 1, name: 'John' },
-    { id: 2, name: 'Jane' },
-    { id: 3, name: 'Bob' }
-  ];
-  // Return the users as a response
-  res.json(users);
-});
-
 
 // 404 not found handler
 app.use(notFoundHandler);

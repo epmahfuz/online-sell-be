@@ -17,7 +17,30 @@ router.post('/add', logRequest, (req, res) => {
   } catch(error){
     res.status(500).json({ error: 'Failed to save category' });
   }
-  
+
 });
+
+router.get('/getAll', logRequest, (req, res) => {
+  Category.find()
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+})
+
+router.get('/get/:categoryId', logRequest, (req, res) => {
+  Category.find(
+    {_id : req.params.categoryId}
+  ).then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+})
 
 module.exports = router;
