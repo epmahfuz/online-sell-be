@@ -59,7 +59,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // routing setup
-app.use("/", loginRouter);
+app.use("/access-control", loginRouter);
 app.use("/users", usersRouter);
 app.use("/inbox", inboxRouter);
 app.use("/product", productRouter);

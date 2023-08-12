@@ -15,10 +15,13 @@ const doLoginValidationHandler = function (req, res, next) {
   if (Object.keys(mappedErrors).length === 0) {
     next();
   } else {
-    res.render("index", {
-      data: {
-        username: req.body.username,
-      },
+    // res.render("index", {
+    //   data: {
+    //     username: req.body.username,
+    //   },
+    //   errors: mappedErrors,
+    // });
+    res.status(500).json({
       errors: mappedErrors,
     });
   }

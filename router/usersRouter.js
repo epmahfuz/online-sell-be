@@ -19,6 +19,21 @@ const { checkLogin, requireRole } = require("../middlewares/common/checkLogin");
 
 const router = express.Router();
 
+//  ************ Most important - used - Start ************
+
+// add anonymous user
+router.post(
+  "/addAnonymousUser",
+  avatarUpload,
+  addUserValidators,
+  addUserValidationHandler,
+  addUser
+);
+
+//  ************ Most important - used - End ************
+
+
+
 // users page
 router.get(
   "/",

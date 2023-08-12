@@ -39,18 +39,23 @@ async function login(req, res, next) {
         const token = jwt.sign(userObject, process.env.JWT_SECRET, {
           expiresIn: process.env.JWT_EXPIRY,
         });
-
-        // set cookie
-        res.cookie(process.env.COOKIE_NAME, token, {
-          maxAge: process.env.JWT_EXPIRY,
-          httpOnly: true,
-          signed: true,
+        // josn response
+        res.status(200).json({
+          "access_token": token,
+          "message": "Login successful!"
         });
 
-        // set logged in user local identifier
-        res.locals.loggedInUser = userObject;
+        // set cookie
+        // res.cookie(process.env.COOKIE_NAME, token, {
+        //   maxAge: process.env.JWT_EXPIRY,
+        //   httpOnly: true,
+        //   signed: true,
+        // });
 
-        res.redirect("inbox");
+        // set logged in user local identifier
+        //res.locals.loggedInUser = userObject;
+
+        //res.redirect("inbox");
       } else {
         throw createError("Login failed! Please try again.");
       }
@@ -58,16 +63,24 @@ async function login(req, res, next) {
       throw createError("Login failed! Please try again.");
     }
   } catch (err) {
-    res.render("index", {
-      data: {
-        username: req.body.username,
-      },
-      errors: {
-        common: {
-          msg: err.message,
+      res.status(500).json({
+        errors: {
+          common: {
+            msg: "Unknown error occured!",
+          },
         },
-      },
-    });
+      });
+      
+    // res.render("index", {
+    //   data: {
+    //     username: req.body.username,
+    //   },
+    //   errors: {
+    //     common: {
+    //       msg: err.message,
+    //     },
+    //   },
+    // });
   }
 }
 

@@ -6,18 +6,7 @@ const path = require("path");
 // internal imports
 const User = require("../models/People");
 
-// get users page
-async function getUsers(req, res, next) {
-  try {
-    const users = await User.find();
-    res.render("users", {
-      users: users,
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
+//  ************ Most important - used - Start ************
 // add user
 async function addUser(req, res, next) {
   let newUser;
@@ -52,7 +41,21 @@ async function addUser(req, res, next) {
     });
   }
 }
+//  ************ Most important - used - End ************
 
+
+
+// get users page
+async function getUsers(req, res, next) {
+  try {
+    const users = await User.find();
+    res.render("users", {
+      users: users,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 // remove user
 async function removeUser(req, res, next) {
   try {

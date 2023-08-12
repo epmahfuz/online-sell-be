@@ -15,6 +15,19 @@ const router = express.Router();
 // set page title
 const page_title = "Login";
 
+//  ************ Most important - used - Start ************
+// process login - new
+router.post(
+  "/login",
+  decorateHtmlResponse(page_title),
+  doLoginValidators,
+  doLoginValidationHandler,
+  login
+);
+//  ************ Most important - used - End ************
+
+
+
 // login page
 router.get("/", decorateHtmlResponse(page_title), redirectLoggedIn, getLogin);
 
