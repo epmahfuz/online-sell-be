@@ -1,35 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const Category = require('../models/Category');
 
-const logRequest = (req, res, next) => {
-  console.log('Received a Category request');
+// Internal imports
+const Category = require('../models/Category');
+const categoryImgUpload = require("../middlewares/category/imageUpload");
+const { addCategory, getAllCategory } = require('../controller/categoryController');
+const {addCategoryValidators, addCategoryValidationHandler} = require('../middlewares/category/categoryValidators');
+
+const customMessages = {
+  addCategory: 'Received a Category request for adding - /add',
+  deleteCategory: 'Received a Category request for deleting - /delete',
+  getAllCategory: 'Received a Category request for getting - /getAll'
+};
+
+const logRequest = (customMessage) => (req, res, next) => {
+  console.log(customMessage);
   next();
 };
 
-router.post('/add', logRequest, (req, res) => {
-  const { name } = req.body;
-  const newCategory = new Category({ name });
+router.post(
+  '/add', 
+  logRequest(customMessages.addCategory),
+  categoryImgUpload, 
+  addCategoryValidators, 
+  addCategoryValidationHandler, 
+  addCategory
+);
 
-  try{
-    newCategory.save();
-    res.status(201).json({ message: 'Category created successfully' });
-  } catch(error){
-    res.status(500).json({ error: 'Failed to save category' });
-  }
-
-});
-
-router.get('/getAll', logRequest, (req, res) => {
-  Category.find()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    });
-})
+router.get(
+  '/getAll',
+  logRequest(customMessages.getAllCategory), 
+  getAllCategory,
+);
 
 router.get('/get/:categoryId', logRequest, (req, res) => {
   Category.find(
