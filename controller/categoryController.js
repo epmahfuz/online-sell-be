@@ -50,11 +50,30 @@ async function getAllCategory(req, res, next) {
       res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+async function getACategory(req, res, next) {
+  try {
+    const category = await Category.find(
+      {_id : req.params.categoryId}
+    );
+
+    if (!category) {
+      return res.status(404).json({ error: 'Category not found' });
+    }
+  
+    res.json(category);
+
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 // remove category
 async function removeCategory(req, res, next) {
   try {
     const category = await Category.findByIdAndDelete({
-      _id: req.params.id,
+      _id: req.params.categoryId,
     });
 
     // remove category avatar if any
@@ -84,5 +103,6 @@ async function removeCategory(req, res, next) {
 module.exports = {
   getAllCategory,
   addCategory,
+  getACategory,
   removeCategory,
 };
