@@ -31,7 +31,7 @@ async function login(req, res, next) {
           userid: user._id,
           username: user.name,
           email: user.email,
-          avatar: user.avatar || null,
+          image: user.image || null,
           role: user.role || "user",
         };
 

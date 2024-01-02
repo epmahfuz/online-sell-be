@@ -15,7 +15,7 @@ async function addUser(req, res, next) {
   if (req.files && req.files.length > 0) {
     newUser = new User({
       ...req.body,
-      avatar: req.files[0].filename,
+      image: req.files[0].filename,
       password: hashedPassword,
     });
   } else {
@@ -63,10 +63,10 @@ async function removeUser(req, res, next) {
       _id: req.params.id,
     });
 
-    // remove user avatar if any
-    if (user.avatar) {
+    // remove user image if any
+    if (user.image) {
       unlink(
-        path.join(__dirname, `/../public/uploads/avatars/${user.avatar}`),
+        path.join(__dirname, `/../public/uploads/images/${user.image}`),
         (err) => {
           if (err) console.log(err);
         }

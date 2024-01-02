@@ -4,27 +4,27 @@ const { unlink } = require("fs");
 const path = require("path");
 
 // internal imports
-const Category = require("../models/Category");
+const Order = require("../models/Order");
 
 //  ************ Most important - used - Start ************
-async function addCategory(req, res, next) {
-  let  newCategory = new Category({
+async function addOrder(req, res, next) {
+  let  newOrder = new Order({
     ...req.body,
     isActive: true,
     isArchived: false
   });
 
   if (req.files && req.files.length > 0) {
-   newCategory.image = req.files[0].filename
+   newOrder.image = req.files[0].filename
   }
 
   try {
-    const result = await newCategory.save();
+    const result = await newOrder.save();
     res.status(200).json({
-      message: "Category was added successfully!",
+      message: "Order was added successfully!",
     });
   } catch (err) {
-    console.log("addCategory-controller-error: ", err);
+    console.log("addOrder-Controller-error: ", err);
     res.status(500).json({
       errors: {
         common: {
@@ -37,15 +37,13 @@ async function addCategory(req, res, next) {
 }
 //  ************ Most important - used - End ************
 
-async function getAllCategory(req, res, next) {
+async function getAllOrder(req, res, next) {
   
   try {
-    console.log("controller start")
-    const data = await Category.find();
-    console.log("controller start1", data)
+    const data = await Order.find();
     const modifiedData = data.map(item => (
       {
-      image: process.env.APP_URL + "/uploads/categoryImgs/" + item.image,
+      image: process.env.APP_URL + "/uploads/orderImgs/" + item.image,
       name: item.name,
       _id: item._id
     }));
@@ -62,17 +60,17 @@ async function getAllCategory(req, res, next) {
   }
 }
 
-async function getACategory(req, res, next) {
+async function getAOrder(req, res, next) {
   try {
-    const category = await Category.find(
-      {_id : req.params.categoryId}
+    const order = await Order.find(
+      {_id : req.params.orderId}
     );
 
-    if (!category) {
-      return res.status(404).json({ error: 'Category not found' });
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
     }
   
-    res.json(category);
+    res.json(order);
 
   } catch (error) {
       console.error('Error fetching data:', error);
@@ -80,17 +78,17 @@ async function getACategory(req, res, next) {
   }
 }
 
-// remove category
-async function removeCategory(req, res, next) {
+// remove order
+async function removeOrder(req, res, next) {
   try {
-    const category = await Category.findByIdAndDelete({
-      _id: req.params.categoryId,
+    const order = await Order.findByIdAndDelete({
+      _id: req.params.orderId,
     });
 
-    // remove category image if any
-    if (category.image) {
+    // remove order image if any
+    if (order.image) {
       unlink(
-        path.join(__dirname, `/../public/uploads/categoryImgs/${category.image}`),
+        path.join(__dirname, `/../public/uploads/orderImgs/${order.image}`),
         (err) => {
           if (err) console.log(err);
         }
@@ -98,14 +96,14 @@ async function removeCategory(req, res, next) {
     }
 
     res.status(200).json({
-      message: "Category was removed successfully!",
+      message: "Order was removed successfully!",
     });
   } catch (err) {
-    console.log("removeCategory-controller-error: ", err);
+    console.log("removeOrder-controller-error: ", err);
     res.status(500).json({
       errors: {
         common: {
-          msg: "Could not delete the category!",
+          msg: "Could not delete the order!",
         },
       },
     });
@@ -113,8 +111,8 @@ async function removeCategory(req, res, next) {
 }
 
 module.exports = {
-  getAllCategory,
-  addCategory,
-  getACategory,
-  removeCategory,
+  getAllOrder,
+  addOrder,
+  getAOrder,
+  removeOrder,
 };

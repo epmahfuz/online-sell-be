@@ -14,7 +14,7 @@ const usersRouter = require("./router/usersRouter");
 const inboxRouter = require("./router/inboxRouter");
 const productRouter = require("./router/productRouter");
 const categoryRouter = require("./router/categoryRouter");
-const postsRouter = require('./router/posts');
+const orderRouter = require("./router/orderRouter");
 
 // internal imports
 const {
@@ -64,6 +64,7 @@ app.use("/users", usersRouter);
 app.use("/inbox", inboxRouter);
 app.use("/product", productRouter);
 app.use("/category", categoryRouter);
+app.use("/order", orderRouter);
 
 
 // 404 not found handler
