@@ -43,9 +43,18 @@ async function getAllOrder(req, res, next) {
     const data = await Order.find();
     const modifiedData = data.map(item => (
       {
-      image: process.env.APP_URL + "/uploads/orderImgs/" + item.image,
-      name: item.name,
-      _id: item._id
+        _id: item._id,
+        status: item.status,
+        customer: item.customer,
+        customerName: item.customerName,
+        customerPhone: item.customerPhone,
+        customerAddress: item.customerAddress,
+        products: item.products,
+        subtotal: item.subtotal,
+        shippingCost: item.shippingCost,
+        totalAmount: item.totalAmount,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt
     }));
     
     res.json({
@@ -109,10 +118,50 @@ async function removeOrder(req, res, next) {
     });
   }
 }
+// update order
+async function updateOrder(req, res, next) {
+  const orderId = req.params.orderId;
+
+  // Validate if the orderId is a valid ObjectId
+
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { $set: { status: req.body.status } },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({
+        errors: {
+          common: {
+            msg: 'Order not found!',
+          },
+        },
+      });
+    }
+
+    res.status(200).json({
+      message: 'Order updated successfully!',
+      updatedOrder,
+    });
+  } catch (err) {
+    console.log('updateOrder-Controller-error: ', err);
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: 'Unknown error occurred!',
+        },
+      },
+    });
+  }
+}
+
 
 module.exports = {
   getAllOrder,
   addOrder,
   getAOrder,
   removeOrder,
+  updateOrder,
 };

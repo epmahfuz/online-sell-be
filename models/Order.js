@@ -7,7 +7,6 @@ const orderSchema = new mongoose.Schema(
         image: { type: String },
         isActive: { type: Boolean, required: true },
         isArchived: { type: Boolean, required: true },
-        orderId: { type: String, required: true},
         customer: { type: Schema.Types.ObjectId, ref: 'User', required: true,},
         customerName: { type: String, required: true,},
         customerPhone: { type: String, required: true,},
@@ -16,10 +15,13 @@ const orderSchema = new mongoose.Schema(
         products: [
             {
                 productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true, },
+                name:{type:String, required: true},
                 quantity: {type: Number, required: true,},
                 price: { type: Number, required: true,},
             },
         ],
+        subtotal:{ type: Number, required: true,},
+        shippingCost: { type: Number, required: true,},
         totalAmount: { type: Number, required: true,},
         status: {type: String, enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'], default: 'Pending',}
     },

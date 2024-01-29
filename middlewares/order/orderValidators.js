@@ -22,14 +22,6 @@ const addOrderValidators = [
     .isString()
     .withMessage('Image must be a string'),
 
-  // Validate 'orderId' field
-  check('orderId')
-    .trim()
-    .notEmpty()
-    .withMessage('Order ID is required')
-    .isString()
-    .withMessage('Order ID must be a string'),
-
   // Validate 'customer' field
   check('customer')
     .notEmpty()
