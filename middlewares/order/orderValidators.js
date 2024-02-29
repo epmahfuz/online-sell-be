@@ -37,9 +37,19 @@ const addOrderValidators = [
     .notEmpty()
     .withMessage('Product ID is required'),
 
+  body('products.*.counterInCart')
+    .isInt({ min: 1 })
+    .withMessage('CounterInCart must be a positive integer'),
+
   body('products.*.quantity')
     .isInt({ min: 1 })
     .withMessage('Quantity must be a positive integer'),
+    
+  body('products.*.quantityType')
+    .notEmpty()
+    .withMessage('QuantityType is required')
+    .isString()
+    .withMessage('QuantityType must be a string'),
 
   body('products.*.price')
     .isFloat({ min: 0 })

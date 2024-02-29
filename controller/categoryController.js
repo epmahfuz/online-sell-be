@@ -40,9 +40,7 @@ async function addCategory(req, res, next) {
 async function getAllCategory(req, res, next) {
   
   try {
-    console.log("controller start")
     const data = await Category.find();
-    console.log("controller start1", data)
     const modifiedData = data.map(item => (
       {
       image: process.env.APP_URL + "/uploads/categoryImgs/" + item.image,

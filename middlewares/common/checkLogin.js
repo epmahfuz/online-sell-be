@@ -3,12 +3,15 @@ const createError = require("http-errors");
 
 // auth guard to protect routes that need authentication
 const checkLogin = (req, res, next) => {
-  let cookies =
-    Object.keys(req.signedCookies).length > 0 ? req.signedCookies : null;
-
-  if (cookies) {
+  //let cookies = Object.keys(req.signedCookies).length > 0 ? req.signedCookies : null;
+  
+  let token;
+  if(req && req.headers && req.headers.authorization){
+    token = req.headers.authorization.split(' ')[1];
+  }
+  
+  if (token) {
     try {
-      token = cookies[process.env.COOKIE_NAME];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decoded;
 

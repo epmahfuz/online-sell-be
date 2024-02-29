@@ -1,6 +1,7 @@
 // external imports
 const express = require("express");
 const { check } = require("express-validator");
+const router = express.Router();
 
 // internal imports
 const {
@@ -14,16 +15,24 @@ const {
   addUserValidators,
   addUserValidationHandler,
 } = require("../middlewares/users/userValidators");
-
 const { checkLogin, requireRole } = require("../middlewares/common/checkLogin");
+const logRequest = require('../middlewares/common/logRequest');
 
-const router = express.Router();
+const customMessages = {
+  addAnonymousUser: 'Received a User request for adding - /addAnonymousUser',
+  addUser: 'Received a User request for adding - /add',
+  deleteUser: 'Received a User request for deleting - /delete/userId',
+  getAllUser: 'Received a User request for getting - /getAll',
+  getAUser: 'Received a User request for getting - /get/:userId',
+  updateUser: 'Received a User request for updating - /update/:userId'
+};
 
 //  ************ Most important - used - Start ************
 
 // add anonymous user
 router.post(
   "/addAnonymousUser",
+  logRequest(customMessages.addAnonymousUser),
   avatarUpload,
   addUserValidators,
   addUserValidationHandler,
@@ -31,8 +40,6 @@ router.post(
 );
 
 //  ************ Most important - used - End ************
-
-
 
 // users page
 router.get(

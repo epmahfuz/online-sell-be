@@ -46,6 +46,7 @@ async function getByCategoryId(req, res, next) {
       name: item.name,
       price:item.price,
       quantity: item.quantity,
+      quantityType: item.quantityType,
       counterInCart: 0,
       _id: item._id
     }));
@@ -69,6 +70,7 @@ async function getAll(req, res, next) {
       name: item.name,
       price:item.price,
       quantity: item.quantity,
+      quantityType: item.quantityType,
       counterInCart: 0,
       _id: item._id
     }));

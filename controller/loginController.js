@@ -31,6 +31,7 @@ async function login(req, res, next) {
           userid: user._id,
           username: user.name,
           email: user.email,
+          mobile: user.mobile,
           image: user.image || null,
           role: user.role || "user",
         };
@@ -42,6 +43,7 @@ async function login(req, res, next) {
         // josn response
         res.status(200).json({
           "access_token": token,
+          "loggedInUser": userObject,
           "message": "Login successful!"
         });
 

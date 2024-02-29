@@ -7,6 +7,8 @@ const imageUpload = require("../middlewares/common/imageUpload");
 const { addCategory, getAllCategory, getACategory, removeCategory } = require('../controller/categoryController');
 const {addCategoryValidators, addCategoryValidationHandler} = require('../middlewares/category/categoryValidators');
 const logRequest = require('../middlewares/common/logRequest');
+const { checkLogin, requireRole } = require("../middlewares/common/checkLogin");
+
 
 const customMessages = {
   addCategory: 'Received a Category request for adding - /add',
@@ -14,15 +16,13 @@ const customMessages = {
   getAllCategory: 'Received a Category request for getting - /getAll',
   getACategory: 'Received a Category request for getting - /get/:categoryId'
 };
- 
-// const logRequest = (customMessage) => (req, res, next) => {
-//   console.log(customMessage);
-//   next();
-// };
+
 
 router.post(
   '/add', 
   logRequest(customMessages.addCategory),
+  checkLogin,
+  requireRole(["admin"]),
   imageUpload("categoryImgs"), 
   addCategoryValidators, 
   addCategoryValidationHandler, 
@@ -31,19 +31,21 @@ router.post(
 
 router.get(
   '/getAll',
-  logRequest(customMessages.getAllCategory), 
+  logRequest(customMessages.getAllCategory),
   getAllCategory,
 );
 
 router.get(
   '/get/:categoryId',
-  logRequest(customMessages.getACategory), 
+  logRequest(customMessages.getACategory),
   getACategory
 );
 
 router.delete(
   "/delete/:categoryId",
   logRequest(customMessages.deleteCategory),
+  checkLogin,
+  requireRole(["admin"]),
   removeCategory
 );
 

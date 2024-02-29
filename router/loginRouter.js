@@ -1,5 +1,6 @@
 // external imports
 const express = require("express");
+const router = express.Router();
 
 // internal imports
 const { getLogin, login, logout } = require("../controller/loginController");
@@ -9,8 +10,12 @@ const {
   doLoginValidationHandler,
 } = require("../middlewares/login/loginValidators");
 const { redirectLoggedIn } = require("../middlewares/common/checkLogin");
+const logRequest = require('../middlewares/common/logRequest');
 
-const router = express.Router();
+
+const customMessages = {
+  login: 'Received a access-control request - /login',
+};
 
 // set page title
 const page_title = "Login";
@@ -19,7 +24,7 @@ const page_title = "Login";
 // process login - new
 router.post(
   "/login",
-  decorateHtmlResponse(page_title),
+  logRequest(customMessages.login),
   doLoginValidators,
   doLoginValidationHandler,
   login

@@ -29,6 +29,13 @@ const addProductValidators = [
     check("quantity")
       .isInt({ min: 0 })
       .withMessage("Quantity must be a non-negative integer"),
+    
+    check("quantityType")
+      .isLength({ min: 1 })
+      .withMessage("Quantity Type is required")
+      .isString()
+      .withMessage("Quantity Type  must be a string")
+      .trim(),
   ];
   
 

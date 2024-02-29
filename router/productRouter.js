@@ -7,11 +7,8 @@ const imageUpload = require("../middlewares/common/imageUpload");
 const logRequest = require('../middlewares/common/logRequest');
 const {addProductValidators, addProductValidationHandler} = require('../middlewares/product/productValidators');
 const { addProduct, getAll, getAProduct, removeProduct, getByCategoryId } = require('../controller/productController');
+const { checkLogin, requireRole } = require("../middlewares/common/checkLogin");
 
-const logRequest2 = (req, res, next) => {
-  console.log('Received a Product request');
-  next();
-};
 
 const customMessages = {
   add: 'Received a Product request for adding - /add',
@@ -24,6 +21,8 @@ const customMessages = {
 router.post(
   '/add', 
   logRequest(customMessages.add),
+  checkLogin,
+  requireRole(["admin"]),
   imageUpload("productImgs"), 
   addProductValidators, 
   addProductValidationHandler, 
@@ -32,35 +31,15 @@ router.post(
 
 router.get(
   '/getAll',
-  logRequest(customMessages.getAllCategory), 
+  logRequest(customMessages.getAllCategory),
   getAll,
 );
 
 router.get(
   '/getByCategoryId/:categoryId',
-  logRequest(customMessages.getByCategoryId), 
+  logRequest(customMessages.getByCategoryId),
   getByCategoryId
 );
 
-// router.get('/getByCategoryId/:categoryId', customMessages.getProductByCategoryId, (req, res) => {
-//   Product.find(
-//     {categoryId : req.params.categoryId}
-//   ).then((data) => {
-//       res.json(data);
-//     })
-//     .catch((error) => {
-//       console.error('Error fetching data:', error);
-//       res.status(500).json({ error: 'Internal server error' });
-//     });
-// })
-router.get('/getAll', logRequest2, (req, res) => {
-  Product.find()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    });
-})
+
 module.exports = router;

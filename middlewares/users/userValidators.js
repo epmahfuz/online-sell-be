@@ -16,24 +16,28 @@ const addUserValidators = [
     .withMessage("Name must not contain anything other than alphabet")
     .trim(),
   check("email")
-    .isEmail()
-    .withMessage("Invalid email address")
+    .optional()
     .trim()
-    .custom(async (value) => {
-      try {
-        const user = await User.findOne({ email: value });
-        if (user) {
-          throw createError("Email already is use!");
+    .custom(async (value, { req }) => {
+      
+      if (value) { // Check validity only if the email field is not empty
+        
+        if (!validator.isEmail(value)) {
+          throw createError("Invalid email address");
         }
-      } catch (err) {
-        throw createError(err.message);
+        try {
+          const user = await User.findOne({ email: value });
+          if (user) {
+            throw createError("Email already is in use!");
+          }
+        } catch (err) {
+          throw createError(err.message);
+        }
       }
     }),
   check("mobile")
-    .isMobilePhone("bn-BD", {
-      strictMode: true,
-    })
-    .withMessage("Mobile number must be a valid Bangladeshi mobile number")
+    .isNumeric()
+    .withMessage("Enter a valid Bangladeshi mobile number")
     .custom(async (value) => {
       try {
         const user = await User.findOne({ mobile: value });
@@ -45,13 +49,14 @@ const addUserValidators = [
       }
     }),
   check("password")
-    .isStrongPassword()
-    .withMessage(
-      "Password must be at least 8 characters long & should contain at least 1 lowercase, 1 uppercase, 1 number & 1 symbol"
-    ),
+    .isLength({ min: 8 })
+    .withMessage('Password must be at least 8 characters long')
+    .matches(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
+    .withMessage('Password must contain at least 1 alphabet, 1 number, and 1 symbol')
 ];
 
 const addUserValidationHandler = function (req, res, next) {
+
   const errors = validationResult(req);
   const mappedErrors = errors.mapped();
   if (Object.keys(mappedErrors).length === 0) {
