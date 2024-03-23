@@ -4,7 +4,7 @@ const router = express.Router();
 // Internal imports
 const Category = require('../models/Category');
 const imageUpload = require("../middlewares/common/imageUpload");
-const { addCategory, getAllCategory, getACategory, removeCategory } = require('../controller/categoryController');
+const { addCategory, updateCategory, getAllCategory, getACategory, removeCategory } = require('../controller/categoryController');
 const {addCategoryValidators, addCategoryValidationHandler} = require('../middlewares/category/categoryValidators');
 const logRequest = require('../middlewares/common/logRequest');
 const { checkLogin, requireRole } = require("../middlewares/common/checkLogin");
@@ -12,6 +12,7 @@ const { checkLogin, requireRole } = require("../middlewares/common/checkLogin");
 
 const customMessages = {
   addCategory: 'Received a Category request for adding - /add',
+  updateCategory: 'Received a Category request for updating - /update/categoryId',
   deleteCategory: 'Received a Category request for deleting - /delete/categoryId',
   getAllCategory: 'Received a Category request for getting - /getAll',
   getACategory: 'Received a Category request for getting - /get/:categoryId'
@@ -27,6 +28,17 @@ router.post(
   addCategoryValidators, 
   addCategoryValidationHandler, 
   addCategory
+);
+
+router.patch(
+  '/update/:categoryId',
+  logRequest(customMessages.updateCategory),
+  checkLogin,
+  requireRole(["admin"]),
+  imageUpload("categoryImgs"), 
+  addCategoryValidators,
+  addCategoryValidationHandler,
+  updateCategory
 );
 
 router.get(

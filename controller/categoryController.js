@@ -35,6 +35,38 @@ async function addCategory(req, res, next) {
   }
 
 }
+const updateCategory = async (req, res, next) => {
+  const categoryId = req.params.categoryId;
+
+  try {
+    let category = await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    category.name = req.body.name;
+
+    if (req.files && req.files.length > 0) {
+      category.image = req.files[0].filename;
+    }
+
+    const updatedCategory = await category.save();
+
+    res.status(200).json({
+      message: "Category updated successfully",
+      category: updatedCategory,
+    });
+  } catch (err) {
+    console.log("updateCategory-controller-error: ", err);
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "Unknown error occurred",
+        },
+      },
+    });
+  }
+};
 //  ************ Most important - used - End ************
 
 async function getAllCategory(req, res, next) {
@@ -112,6 +144,7 @@ async function removeCategory(req, res, next) {
 
 module.exports = {
   getAllCategory,
+  updateCategory,
   addCategory,
   getACategory,
   removeCategory,
