@@ -29,6 +29,10 @@ const addProductValidators = [
     check("quantity")
       .isInt({ min: 0 })
       .withMessage("Quantity must be a non-negative integer"),
+      
+    check("counterInCart")
+      .isInt({ min: 0 })
+      .withMessage("CounterInCart must be a non-negative integer"),
     
     check("quantityType")
       .isLength({ min: 1 })

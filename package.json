@@ -1,7 +1,7 @@
 {
-  "name": "chat-application",
+  "name": "online-sell",
   "version": "1.0.0",
-  "description": "Learn with Sumit Node.js Chat Application",
+  "description": "An wecommerce web application for Tartaja",
   "main": "app.js",
   "scripts": {
     "start": "SET NODE_ENV=development & nodemon & app.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/learnwithsumit/chat-application.git"
+    "url": "git+https://github.com/epmahfuz/online-sell-be.git"
   },
-  "author": "Sumit Saha <sumit.analyzen@gmail.com>",
+  "author": "Al Mahfuz <mahfuz.cse.iu@gmail.com>",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/learnwithsumit/chat-application/issues"
+    "url": "https://github.com/epmahfuz/online-sell-be/issues"
   },
-  "homepage": "https://github.com/learnwithsumit/chat-application#readme",
+  "homepage": "https://github.com/epmahfuz/online-sell-be#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.5",
@@ -29,7 +29,8 @@
     "moment": "^2.29.1",
     "mongoose": "^5.12.11",
     "multer": "^1.4.2",
-    "socket.io": "^4.1.2"
+    "socket.io": "^4.1.2",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "eslint": "^8.36.0",

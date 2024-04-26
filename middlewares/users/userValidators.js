@@ -3,6 +3,7 @@ const { check, validationResult } = require("express-validator");
 const createError = require("http-errors");
 const path = require("path");
 const { unlink } = require("fs");
+const validator = require('validator');
 
 // internal imports
 const User = require("../../models/People");
@@ -19,9 +20,7 @@ const addUserValidators = [
     .optional()
     .trim()
     .custom(async (value, { req }) => {
-      
-      if (value) { // Check validity only if the email field is not empty
-        
+      if (value) {
         if (!validator.isEmail(value)) {
           throw createError("Invalid email address");
         }

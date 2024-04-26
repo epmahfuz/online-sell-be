@@ -2,6 +2,7 @@
 const bcrypt = require("bcrypt");
 const { unlink } = require("fs");
 const path = require("path");
+const crypto = require('crypto');
 
 // internal imports
 const Category = require("../models/Category");
@@ -68,9 +69,15 @@ const updateCategory = async (req, res, next) => {
   }
 };
 //  ************ Most important - used - End ************
-
+async function generateRandomString(length) {
+  return crypto.randomBytes(Math.ceil(length / 2))
+      .toString('hex') // Convert to hexadecimal format
+      .slice(0, length); // Return required number of characters
+}
 async function getAllCategory(req, res, next) {
-  
+  //const COOKIE_SECRET = generateRandomString(64);
+  //console.log("Generated COOKIE_SECRET:", COOKIE_SECRET);
+
   try {
     const data = await Category.find();
     const modifiedData = data.map(item => (
