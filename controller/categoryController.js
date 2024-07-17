@@ -48,6 +48,15 @@ const updateCategory = async (req, res, next) => {
     category.name = req.body.name;
 
     if (req.files && req.files.length > 0) {
+      // remove previous uploaded files
+      unlink(
+        path.join(__dirname, `/../public/uploads/categoryImgs/${category.image}`),
+        (err) => {
+          if (err) console.log(err);
+        }
+      );
+
+      // assign new image
       category.image = req.files[0].filename;
     }
 
@@ -108,8 +117,15 @@ async function getACategory(req, res, next) {
     if (!category) {
       return res.status(404).json({ error: 'Category not found' });
     }
+
+    const modifiedData = category.map(item => (
+      {
+      image: process.env.APP_URL + "/uploads/categoryImgs/" + item.image,
+      name: item.name,
+      _id: item._id
+    }));
   
-    res.json(category);
+    res.json(modifiedData);
 
   } catch (error) {
       console.error('Error fetching data:', error);
