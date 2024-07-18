@@ -46,6 +46,8 @@ const updateCategory = async (req, res, next) => {
     }
 
     category.name = req.body.name;
+    category.isActive = req.body.isActive;
+    category.isArchived = req.body.isArchived;
 
     if (req.files && req.files.length > 0) {
       // remove previous uploaded files
@@ -88,7 +90,9 @@ async function getAllCategory(req, res, next) {
   //console.log("Generated COOKIE_SECRET:", COOKIE_SECRET);
 
   try {
-    const data = await Category.find();
+    const data = await Category.find(
+      {isActive: true, isArchived: false}
+    );
     const modifiedData = data.map(item => (
       {
       image: process.env.APP_URL + "/uploads/categoryImgs/" + item.image,
