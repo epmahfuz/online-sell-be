@@ -49,7 +49,7 @@ const updateCategory = async (req, res, next) => {
     category.isActive = req.body.isActive;
     category.isArchived = req.body.isArchived;
 
-    if (req.files && req.files.length > 0) {
+    if (req.files && req.files.length > 0 && category.image) {
       // remove previous uploaded files
       unlink(
         path.join(__dirname, `/../public/uploads/categoryImgs/${category.image}`),

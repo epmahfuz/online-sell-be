@@ -6,7 +6,7 @@ const Product = require('../models/Product');
 const imageUpload = require("../middlewares/common/imageUpload");
 const logRequest = require('../middlewares/common/logRequest');
 const {addProductValidators, addProductValidationHandler} = require('../middlewares/product/productValidators');
-const { addProduct, getAll, getAProduct, removeProduct, getByCategoryId } = require('../controller/productController');
+const { addProduct, updateProduct, getAll, getAProduct, removeProduct, getByCategoryId, archivePrdouct } = require('../controller/productController');
 const { checkLogin, requireRole } = require("../middlewares/common/checkLogin");
 
 
@@ -14,8 +14,10 @@ const customMessages = {
   add: 'Received a Product request for adding - /add',
   delete: 'Received a Product request for deleting - /delete/productId',
   getAll: 'Received a Product request for getting - /getAll',
-  getA: 'Received a Product request for getting - /get/:productId',
-  getByCategoryId: 'Received a Product request for getting - /product/byCategoryId/:categoryId'
+  getAProduct: 'Received a Product request for getting - /get/:productId',
+  getByCategoryId: 'Received a Product request for getting - /product/byCategoryId/:categoryId',
+  updateProduct: 'Received a Product request for updating - /update/productId',
+  archiveAPrdouct: 'Received a Product request for archiving - /archive/productId'
 };
 
 router.post(
@@ -41,5 +43,27 @@ router.get(
   getByCategoryId
 );
 
+router.get(
+  '/getAProduct/:productId',
+  logRequest(customMessages.getAProduct),
+  getAProduct
+);
+
+router.patch(
+  '/update/:productId',
+  logRequest(customMessages.updateProduct),
+  checkLogin,
+  requireRole(["admin"]),
+  imageUpload("productImgs"), 
+  addProductValidators,
+  addProductValidationHandler,
+  updateProduct
+);
+
+router.patch(
+  '/archive/:productId',
+  logRequest(customMessages.archiveAPrdouct),
+  archivePrdouct
+);
 
 module.exports = router;
