@@ -6,7 +6,10 @@ const doLoginValidators = [
       min: 1,
     })
     .withMessage("Mobile number or email is required"),
-  check("password").isLength({ min: 1 }).withMessage("Password is required"),
+  check("password")
+    .isLength({ min: 1 })
+    .withMessage("Password is required")
+    .trim(),
 ];
  
 const doLoginValidationHandler = function (req, res, next) {

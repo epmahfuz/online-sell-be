@@ -48,10 +48,11 @@ const addUserValidators = [
       }
     }),
   check("password")
-    .isLength({ min: 8 })
-    .withMessage('Password must be at least 8 characters long')
-    .matches(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
-    .withMessage('Password must contain at least 1 alphabet, 1 number, and 1 symbol')
+    .trim()
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long')
+    // .matches(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
+    // .withMessage('Password must contain at least 1 alphabet, 1 number, and 1 symbol')
 ];
 
 const addUserValidationHandler = function (req, res, next) {
