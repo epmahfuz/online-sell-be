@@ -1,0 +1,41 @@
+{
+  "name": "online-sell",
+  "version": "1.0.0",
+  "description": "An wecommerce web application for Tartaja",
+  "main": "app.js",
+  "scripts": {
+    "start": "SET NODE_ENV=development & nodemon & app.js",
+    "prod": "NODE_ENV=production node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epmahfuz/online-sell-be.git"
+  },
+  "author": "Al Mahfuz <mahfuz.cse.iu@gmail.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/epmahfuz/online-sell-be/issues"
+  },
+  "homepage": "https://github.com/epmahfuz/online-sell-be#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-validator": "^6.11.1",
+    "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.11",
+    "multer": "^1.4.2",
+    "socket.io": "^4.1.2",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.7"
+  }
+}
